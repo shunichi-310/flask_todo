@@ -1,0 +1,23 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+h1 {
+    color: #333;
+}
+input, button {
+    padding: 5px;
+    margin: 5px 0;
+}
+ul {
+    list-style: none;
+    padding-left: 0;
+}
+li {
+    margin: 5px 0;
+}
+a {
+    color: red;
+    text-decoration: none;
+    margin-left: 10px;
+}
