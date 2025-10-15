@@ -1,25 +1,41 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>ToDoアプリ</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <h1>ToDoアプリ</h1>
+{% extends "base.html" %}
+{% block title %}ToDoリスト{% endblock %}
+{% block content %}
 
-    <form action="{{ url_for('add') }}" method="POST">
-        <input type="text" name="task" placeholder="新しいタスク">
-        <button type="submit">追加</button>
-    </form>
+  <h1 class="text-center mb-4">ToDoリスト</h1>
 
-    <ul>
-        {% for task in tasks %}
-        <li>
-            {{ loop.index }}. {{ task }}
-            <a href="{{ url_for('delete', task_id=loop.index0) }}">削除</a>
-        </li>
-        {% endfor %}
-    </ul>
-</body>
-</html>
+  <!-- ✅ タスク追加フォーム -->
+  <form action="{{ url_for('add') }}" method="POST" class="d-flex mb-3">
+    <input type="text" name="task" class="form-control me-2" placeholder="新しいタスクを入力" required>
+    <button class="btn btn-primary">追加</button>
+  </form>
+
+  <!-- ✅ タスク一覧 -->
+  {% if tasks %}
+  <ul class="list-group">
+    {% for task in tasks %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+
+        <!-- 完了済みタスクは取り消し線＋グレー表示 -->
+        <span class="{% if task.complete %}text-decoration-line-through text-secondary{% endif %}">
+          {{ task.task }}
+        </span>
+
+        <div>
+          <!-- ✅ 完了切り替えボタン -->
+          <a href="{{ url_for('complete', id=task.id) }}" class="btn btn-success btn-sm me-1">
+            {% if task.complete %}未完了に戻す{% else %}完了{% endif %}
+          </a>
+
+          <!-- ✅ 削除ボタン -->
+          <a href="{{ url_for('delete', id=task.id) }}" class="btn btn-outline-danger btn-sm">削除</a>
+        </div>
+
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p class="text-muted text-center mt-3">まだタスクがありません</p>
+  {% endif %}
+
+{% endblock %}
